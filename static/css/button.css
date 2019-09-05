@@ -1,0 +1,46 @@
+button {
+    border-radius: 2px;
+    font-size: 15px;
+    padding: 8px;
+    text-align: center;
+    margin: 10px 10px;
+    background: white;
+    border: 1px solid rgba(204, 204, 204, 0.15);    
+    -webkit-box-shadow: 1px 1px 6px 0px rgba(204,204,204,1);
+    -moz-box-shadow: 1px 1px 6px 0px rgba(204,204,204,1);
+    box-shadow: 1px 1px 6px 0px rgba(204,204,204,1);
+}
+
+button:hover {
+    cursor: pointer;
+    background: rgba(230, 230, 230, 0.308);
+}
+
+button.primary {
+    background: #0077b5;
+    color: white;
+}
+
+button.primary:not([disabled]):hover {
+    background: #02527e;
+}
+
+button.success {
+    border: 1px solid #337e0517;
+    background: #49b009da;
+    color: white;
+}
+
+button.success:not([disabled]):hover {
+    background: #337e05ce;
+}
+
+button.danger {
+    border: 1px solid #c208082d;
+    background: #dd0909;
+    color: white;
+}
+
+button.danger:not([disabled]):hover {
+    background: #c20808;
+}

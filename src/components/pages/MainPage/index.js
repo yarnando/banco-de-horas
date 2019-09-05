@@ -2,9 +2,11 @@ import React from 'react';
 
 // import { Container } from './styles';
 
-const MainPage = () => (
+const MainPage = (props) => (
     <div>
-        MainPage
+        <button onClick={() => props.history.push('/secondary')}>
+            Go to Todolist
+        </button>
     </div>
 );
 

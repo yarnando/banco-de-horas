@@ -5,17 +5,33 @@ import { bindActionCreators } from 'redux'
 
 import { Creators as todolistActions } from '../../../store/ducks/todos'
 
+import Header from '../../shared/header'
+import Loading from '../../shared/loading'
+
 class SecondaryPage extends Component {
-  componentDidMount() {
-    this.props.getTodolist()
-  }
+    state = {
+        navItems: [
+            { type: "routerlink", link: "/test0", title: "title0" },
+            { type: "routerlink", link: "/test1", title: "title1" },
+            { type: "anchor", link: "/test2", title: "title2" }
+        ]        
+    }
   render() { 
     return (
         <div>
-          <div style={ {backgroundColor: "#ccc"} }>
-            {this.props.loading && "carregando"}
-          </div>
-            {this.props.todoList.map( item => <div key={item.id}>{item.title}</div> )}
+            <Header title="Template" navItems={this.state.navItems} />
+            <div className="container">
+                <button className="content-center align-center" onClick={() => this.props.getTodolist()}>
+                    {this.props.loading ? <div className="flex"><span>Loading... </span><Loading loading={true} size={20} /></div> : "Load Todolist"}
+                </button>
+                {this.props.todoList.map( item => 
+                    <div className="row" key={item.id}>
+                        <div className="grid-item-6">
+                            --- {item.title}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     )
   }

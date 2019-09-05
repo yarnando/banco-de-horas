@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: 0;
+}
+
+@font-face {
+  font-family: "Lato";
+  src: url("../fonts/lato/Lato-Regular.ttf");
+}
+
+html,
+body,
+#app {
+  height: 100%;
+  width: 100%;
+  font-size: 14px;
+  font-family: "Lato";
+  -webkit-font-smoothing: antialiased !important;
+  background: rgba(204, 204, 204, 0.013);
+}

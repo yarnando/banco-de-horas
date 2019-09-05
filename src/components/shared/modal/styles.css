@@ -1,0 +1,59 @@
+.modalContainer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.116);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.modalContainer.hidden {
+    display: none;
+}
+.msgBox {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    text-align: center;
+    background: white;
+    border-radius: 5px;
+    padding: 20px;
+    min-width: 250px;
+    min-height: 150px;
+    -webkit-box-shadow: 1px 1px 6px 0px rgba(204, 204, 204, 1);
+    -moz-box-shadow: 1px 1px 6px 0px rgba(204, 204, 204, 1);
+    box-shadow: 1px 1px 6px 0px rgba(204, 204, 204, 1);
+}
+.MsgText {
+    font-size: 20px;
+    font-weight: normal;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;    
+}
+.errorMsgText {
+    color: red;
+}
+.successMsgText {
+    color: rgb(77, 192, 77);
+}
+.iconElement {
+    margin-right: 10px;
+}
+/* transitions */
+.slideFadeModal-on{
+    transition: opacity 0.5s;   
+    transition: all 0.7s; 
+    transform: translateY(0px);  
+    opacity: 1;       
+}
+.slideFadeModal-off{
+    transition: opacity 0.5s;   
+    transition: all 0.7s;  
+    transform: translateY(-40px);     
+    opacity: 0;          
+} 
