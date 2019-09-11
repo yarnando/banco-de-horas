@@ -28,7 +28,8 @@ const Routes = ({ userLogged }) => (
         <Route path="/" exact component={Signin} />
         <Route path="/signin" component={Signin}/>
         <Route path="/signup" component={Signup}/>
-        <PrivateRoute path="/comptime" exact userLogged={userLogged} component={CompTime}/>
+        <Route path="/comptime" component={CompTime}/>
+        {/* <PrivateRoute path="/comptime" exact userLogged={userLogged} component={CompTime}/> */}
     </Switch>
 )
 
