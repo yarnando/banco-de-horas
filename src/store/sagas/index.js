@@ -1,8 +1,10 @@
-import { all } from 'redux-saga/effects';
-import todosSaga from './todos'
+import { all } from 'redux-saga/effects'
+import auth from './auth'
+// import comptime from './comptime'
 
 export default function* rootSagas() {
     yield all([
-        ...todosSaga
+        ...auth,
+        // ...comptime,
     ])
 }

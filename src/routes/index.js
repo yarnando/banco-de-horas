@@ -1,18 +1,39 @@
 import React from 'react'
-import { Switch, Route } from 'react-router-dom'
-import { ConnectedRouter } from 'connected-react-router' 
-import history from './history'
+import { Switch, Route, Redirect } from 'react-router-dom'
 
-import MainPage from '../components/pages/MainPage'
-import SecondaryPage from '../components/pages/SecondaryPage'
+import { connect } from 'react-redux'
 
-const Routes = () => (
-    <ConnectedRouter history={history}>
-        <Switch>
-            <Route path="/" exact component={MainPage}></Route>
-            <Route path="/secondary" component={SecondaryPage}></Route>
-        </Switch>
-    </ConnectedRouter>
+//Auth
+import Signin from '../components/pages/Auth/Signin'
+import Signup from '../components/pages/Auth/Signup'
+
+//CompTime
+import CompTime from '../components/pages/CompTime'
+
+const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route
+      {...rest}
+      render={props =>
+        rest.userLogged ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={{ pathname: "/", state: { from: props.location } }} />
+        )
+      }
+    />
+  ) 
+
+const Routes = ({ userLogged }) => (
+    <Switch>
+        <Route path="/" exact component={Signin} />
+        <Route path="/signin" component={Signin}/>
+        <Route path="/signup" component={Signup}/>
+        <PrivateRoute path="/comptime" exact userLogged={userLogged} component={CompTime}/>
+    </Switch>
 )
 
-export default Routes
+const mapStateToProps = state => ({
+    userLogged: state.auth.userLogged
+});
+
+export default connect(mapStateToProps)(Routes);
