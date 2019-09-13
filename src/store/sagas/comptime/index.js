@@ -10,12 +10,16 @@ function* getComptimeList(action) {
     yield put(globalCreators.loading())
     const querySnapshot = yield call(rsfb.firestore.getCollection, `usuarios/${idUsuario}/${ano}${mes}`)
     let comptimeList = [];
+    let comptimeId = '';
     querySnapshot.forEach(res => {
         let comptime = res.data().comptimeList;
-        comptimeList = [...comptimeList, ...comptime];
+        comptimeId = res.id
+        comptimeList = [...comptimeList, ...comptime]
     })
+    console.log(comptimeId)
     console.log(comptimeList)
     if(!!comptimeList.length) {
+        yield put(comptimeCreators.setComptimeListId(comptimeId))     
         yield put(comptimeCreators.setComptimeList(comptimeList))     
     } else {
         console.log('no comptimelist, creating a new one')
@@ -27,8 +31,9 @@ function* getComptimeList(action) {
 
 function* putComptimeList(action) {
     yield put(globalCreators.loading())
-    let { idUsuario, ano, mes, comptimeList } = action.payload
-    yield call( rsfb.firestore.addDocument, `usuarios/${idUsuario}/${ano}${mes}`, {comptimeList} )
+    let { idUsuario, ano, mes, id, comptimeList } = action.payload
+    console.log(id)
+    yield call( rsfb.firestore.updateDocument, `usuarios/${idUsuario}/${ano}${mes}/${id}`, {comptimeList} )
     yield put(globalCreators.loading())
     yield put(globalCreators.message({ type: "positive", text: "Comptime List updated!" }))
     yield delay(1000)  
