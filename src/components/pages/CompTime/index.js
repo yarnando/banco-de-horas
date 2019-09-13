@@ -7,34 +7,40 @@ import { creators as comptimeCreators } from '../../../store/ducks/comptime'
 
 import Card from '../../shared/card'
 
+import Form from './components/Form'
+
 class CompTime extends Component {
 
     state = {
-        year: "",
-        month: "",
+        showingForm: false,
     }
 
     changeYear = (e) => {
-        this.setState({ month: "" })
-        this.setState({ year: e.target.value })        
+        this.props.setMonthSelected("")
+        this.props.setYearSelected(e.target.value)     
     }
 
     changeMonth = (e) => {
         let month = `${e.target.value<10?'0':''}${e.target.value}`
-        this.setState({ month: month }) 
+        this.props.setMonthSelected(month)
         if(!!month == false) return 
-        this.props.getComptimeList('idficticio', this.state.year, month);
+        this.props.getComptimeList('idficticio', this.props.yearSelected, month);
     }
 
+    showForm = (comptime) => {
+        this.setState({ showingForm: true })
+        this.props.setComptime(comptime)
+    }
 
     render() {
       return <section className="container">
+            <Form showingForm={this.state.showingForm} editingDay={this.state.editingDay} onClose={() => this.setState({ showingForm: false })}/>
             <form noValidate>
                 <div className="row">
                     <div className="grid-item-3">
                         <div className="input-box">
                             <label>Ano</label> 
-                            <select value={this.state.year}
+                            <select value={this.props.yearSelected}
                                     onChange={(e) => this.changeYear(e)}>
                                 <option value="">Selecione uma opção</option>
                                 <option value="2019">2019</option>
@@ -46,8 +52,8 @@ class CompTime extends Component {
                     <div className="grid-item-3">
                         <div className="input-box">
                             <label>Mês</label> 
-                            <select value={this.state.month}
-                            disabled={!!this.state.year == false}
+                            <select value={this.props.monthSelected}
+                            disabled={!!this.props.yearSelected == false}
                                     onChange={(e) => this.changeMonth(e)}>
                                 <option value="">Selecione uma opção</option>
                                 <option value="1">Janeiro</option>
@@ -57,38 +63,38 @@ class CompTime extends Component {
                     </div>                    
                 </div>
                 <div className="row">
-                {!!this.props.comptimeList.length && this.props.comptimeList.map( (item, index) => (
-                        <div className="grid-item-2" key={index}>
+                {!!this.props.comptimeList.length && this.props.comptimeList.map( (comptime, index) => (
+                        <div onClick={() => this.showForm(comptime)} className="grid-item-2" key={index}>
                             <Card withHeader={
                                 <div className="row align-center">
                                     <div className="grid-item-6 content-center">
-                                        <span>{item.day}</span>
+                                        <span>{comptime.day}</span>
                                     </div>
                                 </div>
                             }>
                                 <div className="flex">
                                     <div className="text-right flex-1">Chegada:</div>
-                                    <div className="pl-4 text-left flex-1">{item.startingTime}</div>                                   
+                                    <div className="pl-4 text-left flex-1">{comptime.startingTime}</div>                                   
                                 </div>
                                 <div className="flex">
                                     <div className="text-right flex-1">Entrada do almoço</div>
-                                    <div className="pl-4 text-left flex-1">{item.lunchStart}</div>                                      
+                                    <div className="pl-4 text-left flex-1">{comptime.lunchStart}</div>                                      
                                 </div>
                                 <div className="flex">
                                     <div className="text-right flex-1">Saída do almoço</div>
-                                    <div className="pl-4 text-left flex-1">{item.lunchEnd}</div>     
+                                    <div className="pl-4 text-left flex-1">{comptime.lunchEnd}</div>     
                                 </div>
                                 <div className="flex">
                                     <div className="text-right flex-1">Saída</div>
-                                    <div className="pl-4 text-left flex-1">{item.stoppingTime}</div>   
+                                    <div className="pl-4 text-left flex-1">{comptime.stoppingTime}</div>   
                                 </div>
                            
                             </Card>
                         </div>           
                 ))}
                  </div>  
-                <div className="row">{this.state.year}  </div>
-                <div className="row">{this.state.month}    </div>
+                <div className="row">{this.props.yearSelected}  </div>
+                <div className="row">{this.props.monthSelected}    </div>
             </form>            
       
 
@@ -97,6 +103,8 @@ class CompTime extends Component {
   }
 
 const mapStateToProps = state => ({
+    yearSelected: state.comptime.yearSelected,
+    monthSelected: state.comptime.monthSelected,
     comptimeList: state.comptime.comptimeList
 });
 
