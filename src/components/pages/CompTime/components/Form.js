@@ -22,14 +22,19 @@ class components extends Component {
         let comptimeIndex = comptimeList.findIndex( item => item.day == this.props.comptime.day)
         comptimeList[comptimeIndex] = { ...comptimeList[comptimeIndex], ...this.props.comptime }
         console.log(comptimeList)
-        this.props.putComptimeList('idficticio', this.props.yearSelected, this.props.monthSelected, id, comptimeList )
-        this.props.onClose()
+        this.props.putComptimeList(
+          "idficticio",
+          this.props.yearSelected,
+          this.props.monthSelected,
+          id,
+          comptimeList
+        );
     }
 
     render() {
         return <div>    
             <Modal showing={this.props.showingForm}
-                   close={() => this.props.onClose()}>
+                   close={() => this.props.setShowingForm(false)}>
                     <h1>{this.props.comptime.day}</h1>
                     <form noValidate onSubmit={(e) => this.updateComptime(e)}>
                         <div className="row">
@@ -85,6 +90,7 @@ const mapStateToProps = state => ({
     comptime: state.comptime.comptime,
     comptimeList: state.comptime.comptimeList,
     comptimeListId: state.comptime.comptimeListId,
+    showingForm: state.comptime.showingForm
 });
 
 const mapDispatchToProps = dispatch =>

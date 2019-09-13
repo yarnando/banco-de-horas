@@ -39,6 +39,7 @@ function* putComptimeList(action) {
     yield delay(1000)  
     yield put(globalCreators.message({ type: "", text: "" }));      
     yield getComptimeList(action)
+    yield put(comptimeCreators.setShowingForm(false)) 
 }
 
 function* createNewComptimeList(idUsuario, ano, mes) {

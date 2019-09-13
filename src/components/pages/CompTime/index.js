@@ -11,10 +11,6 @@ import Form from './components/Form'
 
 class CompTime extends Component {
 
-    state = {
-        showingForm: false,
-    }
-
     changeYear = (e) => {
         this.props.setMonthSelected("")
         this.props.setYearSelected(e.target.value)     
@@ -28,13 +24,13 @@ class CompTime extends Component {
     }
 
     showForm = (comptime) => {
-        this.setState({ showingForm: true })
+        this.props.setShowingForm(true)
         this.props.setComptime(comptime)
     }
 
     render() {
       return <section className="container">
-            <Form showingForm={this.state.showingForm} editingDay={this.state.editingDay} onClose={() => this.setState({ showingForm: false })}/>
+            <Form/>
             <form noValidate>
                 <div className="row">
                     <div className="grid-item-3">
@@ -105,7 +101,8 @@ class CompTime extends Component {
 const mapStateToProps = state => ({
     yearSelected: state.comptime.yearSelected,
     monthSelected: state.comptime.monthSelected,
-    comptimeList: state.comptime.comptimeList
+    comptimeList: state.comptime.comptimeList,
+    showingForm: state.comptime.showingForm
 });
 
 const mapDispatchToProps = dispatch =>

@@ -7,6 +7,7 @@ export const types = {
     SET_MONTH: 'comptime/SET_MONTH',
     SET_COMPTIMELIST_ID: 'comptime/SET_COMPTIMELIST_ID',
     SET_COMPTIMELIST: "comptime/SET_COMPTIMELIST",
+    SET_SHOWINGFORM: "comptime/SET_SHOWINGFORM",
     SET_COMPTIME: "comptime/SET_COMPTIME",
 }
 
@@ -20,7 +21,7 @@ export const creators = {
             mes
         }
     }),     
-    putComptimeList: (idUsuario, ano, mes, id, comptimeList, emptyComptime) => ({
+    putComptimeList: (idUsuario, ano, mes, id, comptimeList, onClose) => ({
         type: types.PUT_COMPTIMELIST,
         payload: {
             idUsuario,
@@ -28,7 +29,7 @@ export const creators = {
             mes,
             id,
             comptimeList,
-            emptyComptime
+            onClose
         }
     }),    
     //normal creators  
@@ -48,6 +49,10 @@ export const creators = {
         type: types.SET_COMPTIMELIST,
         payload: comptimeList 
     }),
+    setShowingForm:(boolean) => ({ 
+        type: types.SET_SHOWINGFORM,
+        payload: boolean 
+    }),
     setComptime:(comptime) => ({ 
         type: types.SET_COMPTIME,
         payload: comptime 
@@ -59,6 +64,7 @@ const INITIAL_STATE = {
     monthSelected: '',
     comptimeListId: '',
     comptimeList: [],
+    showingForm: false,
     comptime: {
         day: '',
         startingTime: '',
@@ -76,6 +82,8 @@ export default function comptime(state = INITIAL_STATE, action) {
             return { ...state, monthSelected: action.payload }
         case types.SET_COMPTIMELIST_ID:
             return { ...state, comptimeListId: action.payload }
+        case types.SET_SHOWINGFORM:
+            return { ...state, showingForm: action.payload }
         case types.SET_COMPTIMELIST:
             return { ...state, comptimeList: action.payload }
         case types.SET_COMPTIME:

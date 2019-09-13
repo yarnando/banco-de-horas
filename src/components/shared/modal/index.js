@@ -29,27 +29,32 @@ export default class Modal extends Component {
     showModal() {
         //wait for the background appear (this.props.showing == true) and set modalShowing true, making the transition execute
         //called on componentDidUpdate
+        this.setState({ showingContainer: true })
         setTimeout(() => {
             this.setState({ modalShowing: true });
         }, 100);
     }
 
     //wait for the modal to disappear and hides background, called on modal button "close"
-    hideModal() {
+    hideModal(hidingFromOutside) {
         this.setState({ modalShowing: false });
         setTimeout(() => {
-            this.props.close();
-        }, 700);
+            //if hiding from outside function, call the function. else, just hide the modal.
+            hidingFromOutside ? this.setState({ showingContainer: false }) : this.props.close();
+        }, 500);
     }
 
     componentDidUpdate(oldProps) {
         const newProps = this.props;
         if (newProps.showing !== oldProps.showing && newProps.showing == true)
             this.showModal();
+        if (newProps.showing !== oldProps.showing && newProps.showing == false)
+            this.hideModal(true);            
+        
     }
 
     render() {
-        return this.props.showing && (
+        return this.state.showingContainer && (
                     <div className="modalContainer">
                         <div
                             className={`msgBox ${
