@@ -9,18 +9,20 @@ export const types = {
 
 export const creators = {
     //saga creators
-    getComptimeList: (idUsuario, anoMes) => ({ 
+    getComptimeList: (idUsuario, ano, mes) => ({ 
         type: types.GET_COMPTIMELIST,
         payload: {
             idUsuario,
-            anoMes
+            ano,
+            mes
         }
     }),     
-    putComptimeList: (idUsuario, anoMes, comptimeList, emptyComptime) => ({
+    putComptimeList: (idUsuario, ano, mes, comptimeList, emptyComptime) => ({
         type: types.PUT_COMPTIMELIST,
         payload: {
             idUsuario,
-            anoMes,
+            ano,
+            mes,
             comptimeList,
             emptyComptime
         }
@@ -37,7 +39,7 @@ export const creators = {
 }
 
 const INITIAL_STATE = {
-    comptimelist: [],
+    comptimeList: [],
     comptime: {
         day: null,
         startingTime: '',

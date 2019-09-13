@@ -3,50 +3,29 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import Card from '../../shared/card'
+import { creators as comptimeCreators } from '../../../store/ducks/comptime'
 
-const getDays = (month, year) => new Date(year, month, 0).getDate();
+import Card from '../../shared/card'
 
 class CompTime extends Component {
 
     state = {
         year: "",
         month: "",
-        numberOfDays: ""
     }
 
     changeYear = (e) => {
-        this.setState({ month: "", numberOfDays: "" })
+        this.setState({ month: "" })
         this.setState({ year: e.target.value })        
     }
 
     changeMonth = (e) => {
-        this.setState({ numberOfDays: "" })
-        this.setState({ month: e.target.value }) 
-        if(!!e.target.value == false) return 
-        this.getDaysOfMonth(e, this.state.month, this.state.year)       
+        let month = `${e.target.value<10?'0':''}${e.target.value}`
+        this.setState({ month: month }) 
+        if(!!month == false) return 
+        this.props.getComptimeList('idficticio', this.state.year, month);
     }
 
-    getDaysOfMonth = (e, month, year) => {
-        e.preventDefault();
-        let numberOfDays = new Date(year, month, 0).getDate()
-        this.setState({ numberOfDays })
-    }
-    
-    renderDays = () => {
-        let items = [];
-        for (let i = 1; i < this.state.numberOfDays; i++) {
-            let item = {
-                day: `${i}/${this.state.month}/${this.state.year}`,
-                startingTime: '00:00',
-                lunchStart: '00:00',
-                lunchEnd: '00:00',
-                stoppingTime: '00:00',
-            }            
-            items.push(item)        
-        }  
-        return items   
-    }
 
     render() {
       return <section className="container">
@@ -72,12 +51,13 @@ class CompTime extends Component {
                                     onChange={(e) => this.changeMonth(e)}>
                                 <option value="">Selecione uma opção</option>
                                 <option value="1">Janeiro</option>
+                                <option value="2">Fevereiro</option>
                             </select>
                         </div>                       
                     </div>                    
                 </div>
                 <div className="row">
-                {this.renderDays().map( (item, index) => (
+                {!!this.props.comptimeList.length && this.props.comptimeList.map( (item, index) => (
                         <div className="grid-item-2" key={index}>
                             <Card withHeader={
                                 <div className="row align-center">
@@ -109,7 +89,6 @@ class CompTime extends Component {
                  </div>  
                 <div className="row">{this.state.year}  </div>
                 <div className="row">{this.state.month}    </div>
-                <div className="row">{this.state.numberOfDays}   </div>
             </form>            
       
 
@@ -118,14 +97,14 @@ class CompTime extends Component {
   }
 
 const mapStateToProps = state => ({
-    
+    comptimeList: state.comptime.comptimeList
 });
 
-// const mapDispatchToProps = dispatch =>
-//   bindActionCreators(Actions, dispatch);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(comptimeCreators, dispatch);
 
 export default connect(
   mapStateToProps,
-  // mapDispatchToProps
+  mapDispatchToProps
 )(CompTime);
 

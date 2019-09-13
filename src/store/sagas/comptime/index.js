@@ -6,32 +6,54 @@ import rsfb from "../../services/firebaseConfig";
 import { push } from 'connected-react-router'
 
 function* getComptimeList(action) {
-    let { idUsuario, anoMes } = action.payload
+    let { idUsuario, ano, mes } = action.payload
     yield put(globalCreators.loading())
-    const querySnapshot = yield call(rsfb.firestore.getCollection, `usuarios/${idUsuario}/${anoMes}`)
+    const querySnapshot = yield call(rsfb.firestore.getCollection, `usuarios/${idUsuario}/${ano}${mes}`)
     let comptimeList = [];
     querySnapshot.forEach(res => {
-        let comptime = res.data();
-        comptime.id = res.id;
-        comptimeList = [...comptimeList, comptime];
+        let comptime = res.data().comptimeList;
+        comptimeList = [...comptimeList, ...comptime];
     })
-    
-    yield put(comptimeCreators.setComptimeList(comptimeList))
-    yield put(globalCreators.loading())    
+    console.log(comptimeList)
+    if(!!comptimeList.length) {
+        yield put(comptimeCreators.setComptimeList(comptimeList))     
+    } else {
+        console.log('no comptimelist, creating a new one')
+        let newComptimeList = yield createNewComptimeList(idUsuario, ano, mes)
+        yield put(comptimeCreators.setComptimeList(newComptimeList))   
+    } 
+    yield put(globalCreators.loading())  
 }
 
 function* putComptimeList(action) {
     yield put(globalCreators.loading())
-    let { idUsuario, anoMes, comptimeList, emptyComptime } = action.payload
-    yield call( rsfb.firestore.updateDocument, `usuarios/${idUsuario}/${anoMes}`, comptimeList )
+    let { idUsuario, ano, mes, comptimeList } = action.payload
+    yield call( rsfb.firestore.addDocument, `usuarios/${idUsuario}/${ano}${mes}`, {comptimeList} )
     yield put(globalCreators.loading())
     yield put(globalCreators.message({ type: "positive", text: "Comptime List updated!" }))
     yield delay(1000)  
     yield put(globalCreators.message({ type: "", text: "" }));      
-    yield getComptimeList()
+    yield getComptimeList(action)
+}
+
+function* createNewComptimeList(idUsuario, ano, mes) {
+    let numberOfDays = new Date(ano, mes, 0).getDate()        
+    let comptimeList = [];
+    for (let i = 1; i < numberOfDays; i++) {
+        let item = {
+            day: `${i<10?'0':''}${i}/${mes}/${ano}`,
+            startingTime: '00:00',
+            lunchStart: '00:00',
+            lunchEnd: '00:00',
+            stoppingTime: '00:00',
+        }            
+        comptimeList.push(item)        
+    } 
+    yield call( rsfb.firestore.addDocument, `usuarios/${idUsuario}/${ano}${mes}`, {comptimeList} )
+    return comptimeList
 }
 
 export default [
     takeLatest(comptimeTypes.GET_COMPTIMELIST, getComptimeList),
-    takeLatest(comptimeTypes.PUT_COMPTIME, putComptimeList),
+    takeLatest(comptimeTypes.PUT_COMPTIMELIST, putComptimeList),
 ]
