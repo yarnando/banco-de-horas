@@ -5,7 +5,7 @@ const loading = props =>
     props.loading && (
         <div
             style={{ width: `${props.size}px`, height: `${props.size}px` }}
-            class="spinner"
+            className="spinner"
         ></div>
     );
 

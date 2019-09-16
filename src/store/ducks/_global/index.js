@@ -5,7 +5,10 @@ export const types = {
 };
 
 export const creators = {
-  loading: () => ({ type: types.LOADING }),
+  loading: (bool) => ({
+    type: types.LOADING,
+    payload: bool
+  }),
   message: message => ({
     type: types.MESSAGE,
     payload: message
@@ -22,7 +25,7 @@ const INITIAL_STATE = {
 export default function global(state = INITIAL_STATE, action) {
   switch (action.type) {
     case types.LOADING:
-      return { ...state, loading: !state.loading };
+      return { ...state, loading: action.payload };
     case types.MESSAGE:
       return { ...state, message: action.payload };
     case types.ERROR:

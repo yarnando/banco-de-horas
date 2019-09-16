@@ -12,10 +12,10 @@ function* signUp() {
 
   try {
 
-    yield put({ type: globalTypes.LOADING });
+    yield put(globalCreators.loading(true))
     yield call(rsfb.auth.createUserWithEmailAndPassword, user.email, user.password);
     yield put(globalCreators.message({ type: "positive", text: "Your account has been created!" }));
-    yield put({ type: globalTypes.LOADING });
+    yield put(globalCreators.loading(false))
     yield put(authCreators.user({ email: '', password: '' }))
     yield delay(1000)  
     yield put(authCreators.userLogged(true));
@@ -38,10 +38,10 @@ function* signIn() {
     let user = yield select(getUser)
 
     try {
-        yield put({ type: globalTypes.LOADING });
+        yield put(globalCreators.loading(true))
         yield call(rsfb.auth.signInWithEmailAndPassword, user.email, user.password);
         yield put(globalCreators.message({ type: "positive", text: "Logged with success!" }));
-        yield put({ type: globalTypes.LOADING });
+        yield put(globalCreators.loading(false))
         yield put(authCreators.user({ email: '', password: '' }))      
         yield delay(1000)  
         yield put(authCreators.userLogged(true));
@@ -50,7 +50,7 @@ function* signIn() {
       } catch (error) {
         yield put(globalCreators.message({ type: "danger", text: "Error logging in: " + error }));
         yield put({ type: globalTypes.ERROR });
-        yield put({ type: globalTypes.LOADING });
+        yield put(globalCreators.loading(false))
         yield delay(1000)  
         yield put(globalCreators.message({ type: "", text: "" }));          
       }
@@ -60,9 +60,9 @@ function* logOut() {
 
     try {
 
-        yield put({ type: globalTypes.LOADING });
+        yield put(globalCreators.loading(true))
         yield call(rsfb.auth.signOut);
-        yield put({ type: globalTypes.LOADING });
+        yield put(globalCreators.loading(false))
         yield put(globalCreators.message({ type: "positive", text: "Logged out!" }));
         yield delay(1000)  
         yield put(globalCreators.message({ type: "", text: "" }));            
@@ -73,7 +73,8 @@ function* logOut() {
         yield put(globalCreators.message({ type: "danger", text: "Error logging out: " + error }));
         yield put({ type: globalTypes.ERROR });
         yield delay(1000)  
-        yield put(globalCreators.message({ type: "", text: "" }));           
+        yield put(globalCreators.message({ type: "", text: "" }));   
+        yield put(globalCreators.loading(false))        
 
       }
 }

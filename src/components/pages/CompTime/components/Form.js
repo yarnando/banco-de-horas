@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { creators as comptimeCreators } from '../../../../store/ducks/comptime'
 
 import Modal from '../../../shared/modal'
+import Loading from '../../../shared/loading'
 
 class components extends Component {
 
@@ -75,7 +76,7 @@ class components extends Component {
                         </div>
                         <div className="row">
                             <div className="grid-item-6">
-                                    <button>Salvar</button>                           
+                                    {this.props.loading ? <Loading loading={this.props.loading} size={22}/> : <button>Salvar</button>}                          
                             </div>
                         </div>
                     </form>
@@ -90,7 +91,8 @@ const mapStateToProps = state => ({
     comptime: state.comptime.comptime,
     comptimeList: state.comptime.comptimeList,
     comptimeListId: state.comptime.comptimeListId,
-    showingForm: state.comptime.showingForm
+    showingForm: state.comptime.showingForm,
+    loading: state.global.loading
 });
 
 const mapDispatchToProps = dispatch =>

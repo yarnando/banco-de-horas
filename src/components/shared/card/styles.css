@@ -5,6 +5,7 @@
     -webkit-box-shadow: 1px 1px 6px 0px rgba(204, 204, 204, 1);
     -moz-box-shadow: 1px 1px 6px 0px rgba(204, 204, 204, 1);
     box-shadow: 1px 1px 6px 0px rgba(204, 204, 204, 1);
+    transition: transform .2s;
 }
 .card__header,
 .card__content {
@@ -29,5 +30,9 @@
     .card__header {
         flex-direction: row;
         font-size: 20px;
+    }
+    .card:hover {
+        cursor: pointer;
+        transform: scale(1.04);
     }
 }

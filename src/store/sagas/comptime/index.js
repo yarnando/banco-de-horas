@@ -7,7 +7,7 @@ import { push } from 'connected-react-router'
 
 function* getComptimeList(action) {
     let { idUsuario, ano, mes } = action.payload
-    yield put(globalCreators.loading())
+    yield put(globalCreators.loading(true))
     const querySnapshot = yield call(rsfb.firestore.getCollection, `usuarios/${idUsuario}/${ano}${mes}`)
     let comptimeList = [];
     let comptimeId = '';
@@ -26,15 +26,14 @@ function* getComptimeList(action) {
         let newComptimeList = yield createNewComptimeList(idUsuario, ano, mes)
         yield put(comptimeCreators.setComptimeList(newComptimeList))   
     } 
-    yield put(globalCreators.loading())  
+    yield put(globalCreators.loading(false))  
 }
 
 function* putComptimeList(action) {
-    yield put(globalCreators.loading())
+    yield put(globalCreators.loading(true))
     let { idUsuario, ano, mes, id, comptimeList } = action.payload
     console.log(id)
     yield call( rsfb.firestore.updateDocument, `usuarios/${idUsuario}/${ano}${mes}/${id}`, {comptimeList} )
-    yield put(globalCreators.loading())
     yield put(globalCreators.message({ type: "positive", text: "Comptime List updated!" }))
     yield delay(1000)  
     yield put(globalCreators.message({ type: "", text: "" }));      
