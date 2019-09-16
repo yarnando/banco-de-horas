@@ -8529,6 +8529,11 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4, react-is
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.9.0.tgz#21ca9561399aad0ff1a7701c01683e8ca981edcb"
   integrity sha512-tJBzzzIgnnRfEm046qRcURvwQnZVXmuCbscxUO5RWrGTXpon2d4c8mI0D8WE6ydVIm29JiLB6+RslkIvym9Rjw==
 
+react-keyboard-time-input@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/react-keyboard-time-input/-/react-keyboard-time-input-2.1.1.tgz#c67a9496e69f6fac7a4d9de4e84714671cd1bec5"
+  integrity sha1-xnqUluafb6x6TZ3k6EcUZxzRvsU=
+
 react-redux@^7.0.3:
   version "7.1.1"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-7.1.1.tgz#ce6eee1b734a7a76e0788b3309bf78ff6b34fa0a"

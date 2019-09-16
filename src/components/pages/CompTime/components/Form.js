@@ -5,14 +5,17 @@ import { connect } from 'react-redux';
 
 import { creators as comptimeCreators } from '../../../../store/ducks/comptime'
 
+import TimeInput from 'react-keyboard-time-input';
+
 import Modal from '../../../shared/modal'
 import Loading from '../../../shared/loading'
 
 class components extends Component {
 
     handleInputChange = (e, field) => {
+        console.log(e)
         const comptime = { ...this.props.comptime }
-        comptime[field] = e.target.value
+        comptime[field] = e
         this.props.setComptime(comptime)
     } 
 
@@ -38,12 +41,12 @@ class components extends Component {
                    close={() => this.props.setShowingForm(false)}>
                     <h1>{this.props.comptime.day}</h1>
                     <form noValidate onSubmit={(e) => this.updateComptime(e)}>
+                        {JSON.stringify(this.props.comptime.startingTime)}
                         <div className="row">
                             <div className="grid-item-6">
                                 <div className="input-box">
-                                    <label>startingTime</label> 
-                                    <input value={this.props.comptime.startingTime}
-                                           onChange={(e) => this.handleInputChange(e, 'startingTime')} type="text"/>
+                                    <label>startingTime</label>
+                                    <TimeInput value={this.props.comptime.startingTime} onChange={(e) => this.handleInputChange(e, 'startingTime')}/>
                                 </div>                             
                             </div>
                         </div>
@@ -51,7 +54,7 @@ class components extends Component {
                             <div className="grid-item-6">
                                 <div className="input-box">
                                     <label>lunchStart</label> 
-                                    <input value={this.props.comptime.lunchStart}
+                                    <TimeInput value={this.props.comptime.lunchStart}
                                            onChange={(e) => this.handleInputChange(e, 'lunchStart')} type="text"/>
                                 </div>                             
                             </div>
@@ -60,7 +63,7 @@ class components extends Component {
                             <div className="grid-item-6">
                                 <div className="input-box">
                                     <label>lunchEnd</label> 
-                                    <input value={this.props.comptime.lunchEnd}
+                                    <TimeInput value={this.props.comptime.lunchEnd}
                                            onChange={(e) => this.handleInputChange(e, 'lunchEnd')} type="text"/>
                                 </div>                             
                             </div>
@@ -69,7 +72,7 @@ class components extends Component {
                             <div className="grid-item-6">
                                 <div className="input-box">
                                     <label>stoppingTime</label> 
-                                    <input value={this.props.comptime.stoppingTime}
+                                    <TimeInput value={this.props.comptime.stoppingTime}
                                            onChange={(e) => this.handleInputChange(e, 'stoppingTime')} type="text"/>
                                 </div>                             
                             </div>
