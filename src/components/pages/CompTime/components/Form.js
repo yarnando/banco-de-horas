@@ -13,7 +13,7 @@ import Loading from '../../../shared/loading'
 class components extends Component {
 
     handleInputChange = (e, field) => {
-        console.log(e)
+        if(this.checkTime(field, e) == false ) return false
         const comptime = { ...this.props.comptime }
         comptime[field] = e
         this.props.setComptime(comptime)
@@ -33,6 +33,63 @@ class components extends Component {
           id,
           comptimeList
         );
+    }
+
+    checkTime = (field, time) => {
+        const comptime = { ...this.props.comptime }
+        console.log(field)
+        switch(field) {
+            case 'startingTime':
+                var startingTime = new Date(`${this.props.comptime.day} ${time}:00`)
+                var lunchStart = new Date(`${this.props.comptime.day} ${comptime['lunchStart']}:00`)
+                if(startingTime > lunchStart)
+                {
+                    alert('O horário de entrada deve ser anterior à hora de entrada do almoço.')
+                    return false
+                }
+                break
+            case 'lunchStart':
+                var lunchStart = new Date(`${this.props.comptime.day} ${time}:00`)
+                var startingTime = new Date(`${this.props.comptime.day} ${comptime['startingTime']}:00`)
+                var lunchEnd = new Date(`${this.props.comptime.day} ${comptime['lunchEnd']}:00`)
+                if(lunchStart < startingTime)
+                {
+                    alert('O horário de almoço deve ser depois da hora de entrada.')
+                    return false
+                }
+                if(lunchStart > lunchEnd)
+                {
+                    alert('O horário de entrada do almoço deve ser anterior a hora de saida do almoço.')
+                    return false
+                }
+                break
+            case 'lunchEnd':
+                var lunchEnd = new Date(`${this.props.comptime.day} ${time}:00`)
+                var lunchStart = new Date(`${this.props.comptime.day} ${comptime['lunchStart']}:00`)
+                var stoppingTime = new Date(`${this.props.comptime.day} ${comptime['stoppingTime']}:00`)
+                if(lunchEnd < lunchStart)
+                {
+                    alert('O horário de saída do almoço deve ser depois da hora de entrada do almoço.')
+                    return false
+                }
+                if(lunchEnd > stoppingTime)
+                {
+                    alert('O horário de saída do almoço deve ser anterior à hora de saída.')
+                    return false
+                }
+                break
+            case 'stoppingTime':
+                var stoppingTime = new Date(`${this.props.comptime.day} ${time}:00`)
+                var lunchEnd = new Date(`${this.props.comptime.day} ${comptime['lunchEnd']}:00`)
+                if(stoppingTime < lunchEnd)
+                {
+                    alert('O horário de saída deve ser maior que o horário de saída do almoço.')
+                    return false
+                }
+                break
+            default:
+                return true
+        }
     }
 
     render() {
