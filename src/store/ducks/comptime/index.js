@@ -71,6 +71,10 @@ const INITIAL_STATE = {
         lunchStart: '',
         lunchEnd: '',
         stoppingTime: '',
+        difference: {
+            hours: 0,
+            minutes: 0
+        }
     }
 }
 

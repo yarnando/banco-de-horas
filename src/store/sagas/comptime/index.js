@@ -16,15 +16,14 @@ function* getComptimeList(action) {
         comptimeId = res.id
         comptimeList = [...comptimeList, ...comptime]
     })
-    console.log(comptimeId)
-    console.log(comptimeList)
+    // console.log(comptimeId)
+    // console.log(comptimeList)
     if(!!comptimeList.length) {
         yield put(comptimeCreators.setComptimeListId(comptimeId))     
         yield put(comptimeCreators.setComptimeList(comptimeList))     
     } else {
         console.log('no comptimelist, creating a new one')
-        let newComptimeList = yield createNewComptimeList(idUsuario, ano, mes)
-        yield put(comptimeCreators.setComptimeList(newComptimeList))   
+        yield createNewComptimeList(action, idUsuario, ano, mes)
     } 
     yield put(globalCreators.loading(false))  
 }
@@ -32,7 +31,7 @@ function* getComptimeList(action) {
 function* putComptimeList(action) {
     yield put(globalCreators.loading(true))
     let { idUsuario, ano, mes, id, comptimeList } = action.payload
-    console.log(id)
+    // console.log(id)
     yield call( rsfb.firestore.updateDocument, `usuarios/${idUsuario}/${ano}${mes}/${id}`, {comptimeList} )
     yield put(globalCreators.message({ type: "positive", text: "Comptime List updated!" }))
     yield delay(1000)  
@@ -41,7 +40,8 @@ function* putComptimeList(action) {
     yield put(comptimeCreators.setShowingForm(false)) 
 }
 
-function* createNewComptimeList(idUsuario, ano, mes) {
+function* createNewComptimeList(action) {
+    let { idUsuario, ano, mes } = action.payload
     let numberOfDays = new Date(ano, mes, 0).getDate()        
     let comptimeList = [];
     for (let i = 1; i < numberOfDays; i++) {
@@ -51,11 +51,15 @@ function* createNewComptimeList(idUsuario, ano, mes) {
             lunchStart: '00:00',
             lunchEnd: '00:00',
             stoppingTime: '00:00',
+            difference: {
+                hours: 0,
+                minutes: 0
+            },
         }            
         comptimeList.push(item)        
     } 
     yield call( rsfb.firestore.addDocument, `usuarios/${idUsuario}/${ano}${mes}`, {comptimeList} )
-    return comptimeList
+    yield getComptimeList(action)
 }
 
 export default [

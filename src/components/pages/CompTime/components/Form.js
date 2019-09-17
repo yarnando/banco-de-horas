@@ -13,35 +13,67 @@ import Loading from '../../../shared/loading'
 class components extends Component {
 
     handleInputChange = (e, field) => {
-        if(this.checkTime(field, e) == false ) return false
         const comptime = { ...this.props.comptime }
         comptime[field] = e
         this.props.setComptime(comptime)
     } 
 
-    updateComptime = (e) => {
+    updateComptime = async (e) => {
         e.preventDefault()
+        if(this.checkTime('startingTime') == false ) return false
+        if(this.checkTime('lunchStart') == false ) return false
+        if(this.checkTime('lunchEnd') == false ) return false
+        if(this.checkTime('stoppingTime') == false ) return false
         let id = this.props.comptimeListId
         let comptimeList = [...this.props.comptimeList]
         let comptimeIndex = comptimeList.findIndex( item => item.day == this.props.comptime.day)
+        let hoursBank = await this.calcHoursBank(this.props.comptime)
+        await this.handleInputChange(hoursBank, 'difference')       
         comptimeList[comptimeIndex] = { ...comptimeList[comptimeIndex], ...this.props.comptime }
-        console.log(comptimeList)
         this.props.putComptimeList(
           "idficticio",
           this.props.yearSelected,
           this.props.monthSelected,
           id,
           comptimeList
-        );
+        );       
     }
 
-    checkTime = (field, time) => {
+    americanDate(date) {
+        let datePart = date.match(/\d+/g),
+        year = datePart[0].substring(0),
+        month = datePart[1], day = datePart[2];
+        return day+'-'+month+'-'+year;
+    }   
+    
+    calcHoursBank(comptime) {
+        let workSchedule = 8 //in hours
+        
+        let startingTime = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['startingTime']}:00`)
+        let stoppingTime = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['stoppingTime']}:00`)
+        let lunchStart = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['lunchStart']}:00`)
+        let lunchEnd = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['lunchEnd']}:00`)
+
+        let diffMsStartStop = (stoppingTime - startingTime);
+        let diffMsLunchTime = (lunchEnd - lunchStart);
+        let hoursDoneLunch = Math.floor((diffMsLunchTime % 86400000) / 3600000)
+        let minutesDoneLunch = Math.round(((diffMsLunchTime % 86400000) % 3600000) / 60000)        
+        let hoursDone = (Math.floor((diffMsStartStop % 86400000) / 3600000) ) - (hoursDoneLunch)
+        let minutesDone = Math.round(((diffMsStartStop % 86400000) % 3600000) / 60000) - (minutesDoneLunch)
+        let totalDone = {
+            hours: hoursDone - workSchedule,
+            minutes: minutesDone
+        }
+        
+        return totalDone
+    }
+
+    checkTime = (field) => {
         const comptime = { ...this.props.comptime }
-        console.log(field)
         switch(field) {
             case 'startingTime':
-                var startingTime = new Date(`${this.props.comptime.day} ${time}:00`)
-                var lunchStart = new Date(`${this.props.comptime.day} ${comptime['lunchStart']}:00`)
+                var startingTime = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['startingTime']}:00`)
+                var lunchStart = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['lunchStart']}:00`)
                 if(startingTime > lunchStart)
                 {
                     alert('O horário de entrada deve ser anterior à hora de entrada do almoço.')
@@ -49,9 +81,9 @@ class components extends Component {
                 }
                 break
             case 'lunchStart':
-                var lunchStart = new Date(`${this.props.comptime.day} ${time}:00`)
-                var startingTime = new Date(`${this.props.comptime.day} ${comptime['startingTime']}:00`)
-                var lunchEnd = new Date(`${this.props.comptime.day} ${comptime['lunchEnd']}:00`)
+                var lunchStart = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['lunchStart']}:00`)
+                var startingTime = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['startingTime']}:00`)
+                var lunchEnd = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['lunchEnd']}:00`)
                 if(lunchStart < startingTime)
                 {
                     alert('O horário de almoço deve ser depois da hora de entrada.')
@@ -64,9 +96,9 @@ class components extends Component {
                 }
                 break
             case 'lunchEnd':
-                var lunchEnd = new Date(`${this.props.comptime.day} ${time}:00`)
-                var lunchStart = new Date(`${this.props.comptime.day} ${comptime['lunchStart']}:00`)
-                var stoppingTime = new Date(`${this.props.comptime.day} ${comptime['stoppingTime']}:00`)
+                var lunchEnd = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['lunchEnd']}:00`)
+                var lunchStart = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['lunchStart']}:00`)
+                var stoppingTime = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['stoppingTime']}:00`)
                 if(lunchEnd < lunchStart)
                 {
                     alert('O horário de saída do almoço deve ser depois da hora de entrada do almoço.')
@@ -79,8 +111,8 @@ class components extends Component {
                 }
                 break
             case 'stoppingTime':
-                var stoppingTime = new Date(`${this.props.comptime.day} ${time}:00`)
-                var lunchEnd = new Date(`${this.props.comptime.day} ${comptime['lunchEnd']}:00`)
+                var stoppingTime = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['stoppingTime']}:00`)
+                var lunchEnd = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['lunchEnd']}:00`)
                 if(stoppingTime < lunchEnd)
                 {
                     alert('O horário de saída deve ser maior que o horário de saída do almoço.')
