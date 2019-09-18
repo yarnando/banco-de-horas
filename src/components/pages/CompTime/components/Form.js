@@ -27,7 +27,7 @@ class components extends Component {
         let id = this.props.comptimeListId
         let comptimeList = [...this.props.comptimeList]
         let comptimeIndex = comptimeList.findIndex( item => item.day == this.props.comptime.day)
-        let hoursBank = await this.calcHoursBank(this.props.comptime)
+        let hoursBank = await this.calcHoursBankOfDay(this.props.comptime)
         await this.handleInputChange(hoursBank, 'difference')       
         comptimeList[comptimeIndex] = { ...comptimeList[comptimeIndex], ...this.props.comptime }
         this.props.putComptimeList(
@@ -46,7 +46,7 @@ class components extends Component {
         return day+'-'+month+'-'+year;
     }   
     
-    calcHoursBank(comptime) {
+    calcHoursBankOfDay(comptime) {
         let workSchedule = 8 //in hours
         
         let startingTime = new Date(`${this.americanDate(this.props.comptime.day)} ${comptime['startingTime']}:00`)
@@ -61,8 +61,15 @@ class components extends Component {
         let hoursDone = (Math.floor((diffMsStartStop % 86400000) / 3600000) ) - (hoursDoneLunch)
         let minutesDone = Math.round(((diffMsStartStop % 86400000) % 3600000) / 60000) - (minutesDoneLunch)
         let totalDone = {
-            hours: hoursDone - workSchedule,
-            minutes: minutesDone
+            hours: Number,
+            minutes: Number
+        }
+        if((hoursDone >= workSchedule) || minutesDone == '00') {
+            totalDone.hours = hoursDone - workSchedule
+            totalDone.minutes = minutesDone
+        } else {
+            totalDone.hours =  (hoursDone - workSchedule) + 1
+            totalDone.minutes = (60 - minutesDone) * -1
         }
         
         return totalDone
@@ -125,7 +132,7 @@ class components extends Component {
     }
 
     render() {
-        return <div>    
+        return <div>   
             <Modal showing={this.props.showingForm}
                    close={() => this.props.setShowingForm(false)}>
                     <h1>{this.props.comptime.day}</h1>

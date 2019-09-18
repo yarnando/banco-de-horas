@@ -20,13 +20,30 @@ function* getComptimeList(action) {
     // console.log(comptimeList)
     if(!!comptimeList.length) {
         yield put(comptimeCreators.setComptimeListId(comptimeId))     
-        yield put(comptimeCreators.setComptimeList(comptimeList))     
+        yield put(comptimeCreators.setComptimeList(comptimeList))  
+        yield calcTotalHoursBank(comptimeList)   
     } else {
         console.log('no comptimelist, creating a new one')
         yield createNewComptimeList(action, idUsuario, ano, mes)
     } 
     yield put(globalCreators.loading(false))  
 }
+
+function* calcTotalHoursBank(comptimeList) {
+    if (!!comptimeList.length == false) return false;
+    let hours = 0,
+      minutes = 0;
+    comptimeList.map(item => {
+      hours = item.difference.hours + hours;
+      minutes = item.difference.minutes + minutes;
+    });
+    let hoursBank = {
+        hours,
+        minutes
+    }
+    console.log(hoursBank)
+    yield put(comptimeCreators.setHoursBank(hoursBank))  
+  }
 
 function* putComptimeList(action) {
     yield put(globalCreators.loading(true))
