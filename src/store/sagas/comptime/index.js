@@ -35,26 +35,57 @@ function* getComptimeList(action) {
 function* calcTotalHoursBank(comptimeList) {
   if (!!comptimeList.length == false) return false;
   let hours = 0,
-    minutes = 0;
+    minutes = 0,
+    negativeMinutes = false;
 
   comptimeList.map(item => {
     hours = item.difference.hours + hours;
     minutes = item.difference.minutes + minutes;
   });
-  console.log(hours, minutes)
-  if (hours > 0 && minutes < 0) {
+
+  minutes < 0 ? negativeMinutes = true : negativeMinutes = false
+
+  if (Math.abs(minutes) > 59 && negativeMinutes) {
+    let convertedTime = yield timeConvert(Math.abs(minutes));
+    hours = hours - convertedTime.hours;
+    minutes = convertedTime.minutes;
+  } else if (Math.abs(minutes) > 59 && (negativeMinutes == false)) {
+    let convertedTime = yield timeConvert(Math.abs(minutes));
+    hours = hours + convertedTime.hours;
+    minutes = convertedTime.minutes;
+  }
+
+  if (hours > 0 && negativeMinutes) {
     hours = hours - 1
     minutes = 60 - (Math.abs(minutes));
-  } else if(hours < 0 && minutes < 0) {
-    hours = hours
+  } else if(hours < 0 && negativeMinutes) {
+    hours = hours = `-${hours < 10 ? "0" : ""}${Math.abs(hours)}`
     minutes = Math.abs(minutes)
+  } else if(hours < 0 && !negativeMinutes) {
+    hours = hours = `-${hours < 10 ? "0" : ""}${Math.abs(hours)}`
+  } else if(hours == 0 && negativeMinutes) {
+    hours = `-${hours < 10 ? "0" : ""}${Math.abs(hours)}`
+    minutes = Math.abs(minutes)      
+  } else {
+    hours = `${hours < 10 ? "0" : ""}${hours}`
   }
   let hoursBank = {
     hours,
     minutes
   };
-  console.log(hoursBank);
   yield put(comptimeCreators.setHoursBank(hoursBank));
+}
+
+function* timeConvert(n) {
+    var num = n;
+    var hours = (num / 60);
+    var rhours = Math.floor(hours);
+    var minutes = (hours - rhours) * 60;
+    var rminutes = Math.round(minutes);
+    return {
+        hours: rhours,
+        minutes: rminutes
+    };
 }
 
 function* putComptimeList(action) {

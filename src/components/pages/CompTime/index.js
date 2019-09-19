@@ -24,11 +24,7 @@ class CompTime extends Component {
         <div className="row">
             <div className="grid-item-6 space-around">
                 <div>
-                    Total de horas: {this.props.hoursBank.hours}
-                </div>
-                
-                <div>
-                    Total de minutos: {this.props.hoursBank.minutes}
+                    Banco de horas total: {this.props.hoursBank.hours || '00'}:{this.props.hoursBank.minutes || '00'}
                 </div>
             </div>
         </div>

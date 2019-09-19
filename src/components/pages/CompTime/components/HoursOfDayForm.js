@@ -64,6 +64,7 @@ class components extends Component {
             hours: Number,
             minutes: Number
         }
+        console.log(minutesDone)
         if((hoursDone >= workSchedule) || minutesDone == '00') {
             totalDone.hours = hoursDone - workSchedule
             totalDone.minutes = minutesDone

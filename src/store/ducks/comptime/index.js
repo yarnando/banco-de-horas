@@ -70,8 +70,8 @@ const INITIAL_STATE = {
     comptimeListId: '',
     comptimeList: [],
     hoursBank: {
-        hours: 0,
-        minutes: 0,
+        hours: '',
+        minutes: '',
     },
     showingForm: false,
     comptime: {
