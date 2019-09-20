@@ -21,9 +21,8 @@ class components extends Component {
 
     render() {
         return (
-            <form noValidate>
-                <div className="row">
-                    <div className="grid-item-3">
+            <form noValidate className="row block">
+                    <div className="grid-item-6 pt-4">
                         <div className="input-box">
                             <label>Ano</label>
                             <select
@@ -35,7 +34,7 @@ class components extends Component {
                             </select>
                         </div>
                     </div>
-                    <div className="grid-item-3">
+                    <div className="grid-item-6 pt-4">
                         <div className="input-box">
                             <label>Mês</label>
                             <select
@@ -49,7 +48,6 @@ class components extends Component {
                             </select>
                         </div>
                     </div>
-                </div>
             </form>
         );
     }

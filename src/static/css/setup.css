@@ -6,8 +6,8 @@
 }
 
 @font-face {
-  font-family: "Lato";
-  src: url("../fonts/lato/Lato-Regular.ttf");
+  font-family: "Roboto";
+  src: url("../fonts/roboto/Roboto-Light.ttf");
 }
 
 html,
@@ -19,7 +19,7 @@ body,
     height: 100%;
     width: 100%;
     font-size: 14px;
-    font-family: "Lato";
+    font-family: "Roboto";
     -webkit-font-smoothing: antialiased !important;
     background: rgba(204, 204, 204, 0.048);
 }
