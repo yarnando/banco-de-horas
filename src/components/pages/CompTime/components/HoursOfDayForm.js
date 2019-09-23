@@ -13,6 +13,7 @@ import Loading from '../../../shared/loading'
 class components extends Component {
 
     handleInputChange = (e, field) => {
+        if( (typeof e == 'string') && Number(e.substr(0,2)) > 23) return false        
         const comptime = { ...this.props.comptime }
         comptime[field] = e
         this.props.setComptime(comptime)

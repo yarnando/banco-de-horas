@@ -9,7 +9,7 @@ class components extends Component {
       <div className="row content-end">
         <div className="grid-item-6 content-center">
           <div className="hoursBankContainer">
-            <h4 class="hoursBankTitle">Saldo Atual</h4>
+            <h4 className="hoursBankTitle">Saldo Atual</h4>
             <h5>
               {this.props.hoursBank.hours || "00"}:
               {this.props.hoursBank.minutes || "00"}

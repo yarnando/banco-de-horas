@@ -19,6 +19,40 @@ class components extends Component {
         this.props.getComptimeList("idficticio", this.props.yearSelected, month);
     };
 
+    pastYears = () => {
+        let years = []
+        let currentYear = new Date().getFullYear()
+        let startYear = 2019
+        while ( startYear <= currentYear ) {
+            years.push(startYear++);
+        }  
+        return years         
+    }
+
+    pastMonths = () => {
+        let currentDate = new Date()
+        let currentMonth = this.props.yearSelected == currentDate.getFullYear() ? currentDate.getMonth() + 1 : 12
+        let months = []
+        let monthsRaw = [
+            {key: "1", label: "Janeiro"},
+            {key: "2", label: "Fevereiro"},
+            {key: "3", label: "Março"},
+            {key: "4", label: "Abril"},
+            {key: "5", label: "Maio"},
+            {key: "6", label: "Junho"},
+            {key: "7", label: "Julho"},
+            {key: "8", label: "Agosto"},
+            {key: "9", label: "Setembro"},
+            {key: "10", label: "Outubro"},
+            {key: "11", label: "Novembro"},
+            {key: "12", label: "Dezembro"}
+        ]
+        for (let index = 1; index <= currentMonth; index++) {
+            months.push(monthsRaw[index-1])
+        }
+        return months
+    }
+
     render() {
         return (
             <form noValidate className="row block">
@@ -30,7 +64,9 @@ class components extends Component {
                                 onChange={e => this.changeYear(e)}
                             >
                                 <option value="">Selecione uma opção</option>
-                                <option value="2019">2019</option>
+                                {
+                                    this.pastYears().map( (year, index) => <option key={index} value={year}>{year}</option>)
+                                }
                             </select>
                         </div>
                     </div>
@@ -43,8 +79,9 @@ class components extends Component {
                                 onChange={e => this.changeMonth(e)}
                             >
                                 <option value="">Selecione uma opção</option>
-                                <option value="1">Janeiro</option>
-                                <option value="2">Fevereiro</option>
+                                {
+                                    this.pastMonths().map( (month, index) => <option key={index} value={month.key}>{month.label}</option>)
+                                }
                             </select>
                         </div>
                     </div>
