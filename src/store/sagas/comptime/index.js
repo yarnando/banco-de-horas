@@ -6,6 +6,7 @@ import rsfb from "../../services/firebaseConfig";
 import { push } from "connected-react-router";
 
 function* getComptimeList(action) {
+  yield put(comptimeCreators.setComptimeList([]));
   let { idUsuario, ano, mes } = action.payload;
   yield put(globalCreators.loading(true));
   const querySnapshot = yield call(
@@ -110,7 +111,7 @@ function* createNewComptimeList(action) {
   let { idUsuario, ano, mes } = action.payload;
   let numberOfDays = new Date(ano, mes, 0).getDate();
   let comptimeList = [];
-  for (let i = 1; i < numberOfDays; i++) {
+  for (let i = 1; i <= numberOfDays; i++) {
     let item = {
       day: `${i < 10 ? "0" : ""}${i}/${mes}/${ano}`,
       startingTime: "00:00",
