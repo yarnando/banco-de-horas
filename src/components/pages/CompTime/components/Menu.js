@@ -16,7 +16,7 @@ class components extends Component {
         let month = `${e.target.value < 10 ? "0" : ""}${e.target.value}`;
         this.props.setMonthSelected(month);
         if (!!month == false) return;
-        this.props.getComptimeList("idficticio", this.props.yearSelected, month);
+        this.props.getComptimeList(this.props.auth.user.userId, this.props.yearSelected, month);
     };
 
     pastYears = () => {
@@ -91,6 +91,7 @@ class components extends Component {
 }
 
 const mapStateToProps = state => ({
+    auth: state.auth,
     yearSelected: state.comptime.yearSelected,
     monthSelected: state.comptime.monthSelected,    
 });

@@ -32,7 +32,7 @@ class components extends Component {
         await this.handleInputChange(hoursBank, 'difference')       
         comptimeList[comptimeIndex] = { ...comptimeList[comptimeIndex], ...this.props.comptime }
         this.props.putComptimeList(
-          "idficticio",
+          this.props.auth.user.userId,
           this.props.yearSelected,
           this.props.monthSelected,
           id,
@@ -186,6 +186,7 @@ class components extends Component {
 }
 
 const mapStateToProps = state => ({
+    auth: state.auth,
     yearSelected: state.comptime.yearSelected,
     monthSelected: state.comptime.monthSelected,
     comptime: state.comptime.comptime,

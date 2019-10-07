@@ -23,7 +23,8 @@ export const creators = {
 const INITIAL_STATE = {
     user: {
         email: '',
-        password: ''
+        password: '',
+        userId: ''
     },
     userLogged: false,
 }
@@ -33,7 +34,8 @@ export default function auth(state = INITIAL_STATE, action) {
         case types.USER:
             return { ...state, user: {
                 email: action.payload.email,
-                password: action.payload.password
+                password: action.payload.password,
+                userId: action.payload.userId
             } 
         }        
         case types.USER_LOGGED:
