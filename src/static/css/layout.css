@@ -35,6 +35,12 @@
   .container {
     max-width: 1140px;
   }
+  .full-h {
+      height: 100%;
+  }
+  .container-sm {
+    max-width: 600px;
+  }  
   .row .grid-item-1 {
     max-width: calc(100% / 6);
   }

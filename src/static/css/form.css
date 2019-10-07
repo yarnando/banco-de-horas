@@ -23,3 +23,9 @@ form select {
 select {
     cursor: pointer;
 }
+
+form .errorMsg {
+    padding-top: 4px;
+    color: red;
+    font-size: 13px;
+}
