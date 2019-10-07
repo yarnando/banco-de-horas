@@ -18,7 +18,7 @@ class CompTime extends Component {
           {this.props.auth.user.email && 
             <div className="row">
                 <div className="grid-item-6 align-center content-center">
-                    Logado como: {this.props.auth.user.email} {this.props.loading ? <Loading loading={this.props.loading} size={22}/> : <button onClick={() => this.props.logOut()}>Sair</button>}
+                    Logado como: {this.props.auth.user.email} <button onClick={() => this.props.logOut()}>Sair</button>
                 </div>
             </div>        
           }
