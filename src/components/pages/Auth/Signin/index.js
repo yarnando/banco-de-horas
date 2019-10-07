@@ -22,24 +22,18 @@ class Signin extends Component {
 
     validateEmail = () => {
         let email = this.props.auth.user.email
-        console.log(`testando o email: ${email}`)
         if(/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            console.log('email ok')
             this.setState({ emailError: "" })
-            return true
         } else {
             this.setState({ emailError: "Por favor, digite um e-mail válido." })
-            return false
         }
     }
     validatePassword = () => {
         let password = this.props.auth.user.password
         if(password.length >= 6) {
             this.setState({ passwordError: "" })
-            return true
         } else {
             this.setState({ passwordError: "A senha deve ter, pelo menos, 6 caracteres." })
-            return false
         }        
     }
 
@@ -54,6 +48,10 @@ class Signin extends Component {
         return <div className="flex flex-1 content-center align-center">
             <div className="container container-sm mb-4">
                 <h1 className="text-center pt-4">Login</h1>
+                {this.props.message && 
+                <div className="text-center pt-4">
+                    <span>{this.props.message}</span>
+                </div>}
                 <form noValidate onSubmit={(e) => this.validateAndSignIn(e)}>
                     <div className="row">
                         <div className="grid-item-6">
@@ -75,8 +73,12 @@ class Signin extends Component {
                     </div>
                     <div className="row">
                         <div className="grid-item-6">
-                                {this.props.loading ? <Loading loading={this.props.loading} size={22}/> : <button className="primary">Fazer Login</button>}     
-                                <button type="button" onClick={() => this.props.history.push("/signup")}>Não possuo cadastro</button>                     
+                            <div style={{ alignSelf: 'center' }}>
+                                {this.props.loading ? <Loading loading={this.props.loading} size={22}/> : <button className="primary">Fazer Login</button>}
+                            </div>
+                            <div>
+                                <button type="button" onClick={() => this.props.history.push("/signup")}>Não possuo cadastro</button> 
+                            </div>                                    
                         </div>
                     </div>
                 </form>    
@@ -87,6 +89,8 @@ class Signin extends Component {
 
 const mapStateToProps = state => ({
     auth: state.auth,
+    message: state.global.message.text,
+    loading: state.global.loading
 });
 
 const mapDispatchToProps = dispatch =>
