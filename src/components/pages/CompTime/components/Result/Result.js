@@ -11,8 +11,7 @@ class components extends Component {
           <div className="hoursBankContainer">
             <h4 className="hoursBankTitle">Saldo Atual</h4>
             <h5>
-              {this.props.hoursBank.hours || "00"}:
-              {this.props.hoursBank.minutes || "00"}
+              {`${this.props.hoursBank.hours || "00"}h ${this.props.hoursBank.minutes || "00"}m`}
             </h5>
           </div>
         </div>

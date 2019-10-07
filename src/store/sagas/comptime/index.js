@@ -57,18 +57,20 @@ function* calcTotalHoursBank(comptimeList) {
   }
 
   if (hours > 0 && negativeMinutes) {
-    hours = hours - 1
+    hours = hours - 1 
+    hours = `${hours < 10 ? "0" : ""}${hours}`
     minutes = 60 - (Math.abs(minutes));
   } else if(hours < 0 && negativeMinutes) {
     hours = hours = `-${hours < 10 ? "0" : ""}${Math.abs(hours)}`
-    minutes = Math.abs(minutes)
+    minutes = `${Math.abs(minutes) < 10 ? "0" : ""}${Math.abs(minutes)}`
   } else if(hours < 0 && !negativeMinutes) {
     hours = hours = `-${hours < 10 ? "0" : ""}${Math.abs(hours)}`
   } else if(hours == 0 && negativeMinutes) {
     hours = `-${hours < 10 ? "0" : ""}${Math.abs(hours)}`
-    minutes = Math.abs(minutes)      
+    minutes = `${Math.abs(minutes) < 10 ? "0" : ""}${Math.abs(minutes)}`    
   } else {
     hours = `${hours < 10 ? "0" : ""}${hours}`
+    minutes = `${Math.abs(minutes) < 10 ? "0" : ""}${Math.abs(minutes)}`   
   }
   let hoursBank = {
     hours,
