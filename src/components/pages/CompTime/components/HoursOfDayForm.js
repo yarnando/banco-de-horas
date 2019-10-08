@@ -175,7 +175,7 @@ class components extends Component {
                         </div>
                         <div className="row">
                             <div className="grid-item-6">
-                                    {this.props.loading ? <Loading loading={this.props.loading} size={22}/> : <button class="block">Salvar</button>}                          
+                                    {this.props.loading ? <Loading loading={this.props.loading} size={22}/> : <button className="block">Salvar</button>}                          
                             </div>
                         </div>
                     </form>
