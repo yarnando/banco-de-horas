@@ -18,7 +18,9 @@
     "react-scripts": "3.0.1",
     "redux": "^4.0.1",
     "redux-saga": "^1.0.2",
-    "redux-saga-firebase": "^0.15.0"
+    "redux-saga-firebase": "^0.15.0",
+    "create-react-class": "^15.6.3",
+    "express": "^4.17.1"    
   },
   "scripts": {
     "start": "react-scripts start",
@@ -41,8 +43,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "create-react-class": "^15.6.3",
-    "express": "^4.17.1"
-  }
+  "devDependencies": {}
 }
