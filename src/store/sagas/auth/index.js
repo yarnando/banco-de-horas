@@ -14,7 +14,7 @@ function* signUp() {
 
     yield put(globalCreators.loading(true))
     let userLogged = yield call(rsfb.auth.createUserWithEmailAndPassword, user.email, user.password);
-    yield put(globalCreators.message({ type: "positive", text: "Your account has been created!" }));
+    yield put(globalCreators.message({ type: "positive", text: "Sua conta foi criada com sucesso! Fazendo login..." }));
     yield put(globalCreators.loading(false))
     yield put(authCreators.user({ email: user.email, password: '', userId: userLogged.user.uid }))
     yield delay(1500)  
@@ -24,7 +24,12 @@ function* signUp() {
 
   } catch (error) {
 
-    yield put(globalCreators.message({ type: "danger", text: `${error}` }));
+    if(error.code == 'auth/email-already-in-use') {
+        yield put(globalCreators.message({ type: "danger", text: `Este e-mail já está em uso. Por favor, digite outro e-mail.` }));
+    } else {
+        yield put(globalCreators.message({ type: "danger", text: `${error}` }));
+    }
+
     yield put({ type: globalTypes.ERROR });
     yield put(globalCreators.loading(false))
     yield delay(3000)  
@@ -41,14 +46,17 @@ function* signIn() {
     try {
         yield put(globalCreators.loading(true))
         let userLogged = yield call(rsfb.auth.signInWithEmailAndPassword, user.email, user.password);
-        yield put(globalCreators.message({ type: "positive", text: "Logged with success!" }));
         yield put(globalCreators.loading(false))  
-        yield delay(1500)  
         yield put(authCreators.userLogged(true));
         yield put(authCreators.user({ email: user.email, password: '', userId: userLogged.user.uid }))      
         yield put(push('/comptime'))
       } catch (error) {
-        yield put(globalCreators.message({ type: "danger", text: error }));
+        if(error.code == 'auth/user-not-found') {
+            yield put(globalCreators.message({ type: "danger", text: `Usuário não encontrado.` }));
+        } else {
+            yield put(globalCreators.message({ type: "danger", text: `${error}` }));
+        }
+        
         yield put({ type: globalTypes.ERROR });
         yield put(globalCreators.loading(false))
         yield delay(3000)  
@@ -63,7 +71,7 @@ function* logOut() {
         yield put(globalCreators.loading(true))
         yield call(rsfb.auth.signOut);
         yield put(globalCreators.loading(false))
-        yield put(globalCreators.message({ type: "positive", text: "Logged out!" }));
+        // yield put(globalCreators.message({ type: "positive", text: "Logged out!" }));
         yield put(authCreators.user({ email: '', password: '', userId: '' }))           
         yield put(globalCreators.message({ type: "", text: "" }));            
         yield put(authCreators.userLogged(false));

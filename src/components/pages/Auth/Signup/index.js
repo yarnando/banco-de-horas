@@ -41,7 +41,6 @@ class Signup extends Component {
         e.preventDefault()
         if(this.validateEmail() ) return false
         if(this.validatePassword() ) return false
-        console.log('signin up')
         this.props.signUp()
     }
 
