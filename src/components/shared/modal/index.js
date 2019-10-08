@@ -65,7 +65,7 @@ export default class Modal extends Component {
                                 <span className={`${this.state.modalType.icon} iconElement`}></span>
                                 {this.props.children}
                             </div>
-                            <button onClick={() => this.hideModal()}> Close</button>
+                            <button className="dark" onClick={() => this.hideModal()}> Fechar</button>
                         </div>
                     </div>
                 )

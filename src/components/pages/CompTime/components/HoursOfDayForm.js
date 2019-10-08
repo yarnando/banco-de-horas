@@ -138,11 +138,10 @@ class components extends Component {
                    close={() => this.props.setShowingForm(false)}>
                     <h1>{this.props.comptime.day}</h1>
                     <form noValidate onSubmit={(e) => this.updateComptime(e)}>
-                        {JSON.stringify(this.props.comptime.startingTime)}
                         <div className="row">
                             <div className="grid-item-6">
                                 <div className="input-box">
-                                    <label>startingTime</label>
+                                    <label>Entrada</label>
                                     <TimeInput value={this.props.comptime.startingTime} onChange={(e) => this.handleInputChange(e, 'startingTime')}/>
                                 </div>                             
                             </div>
@@ -150,7 +149,7 @@ class components extends Component {
                         <div className="row">
                             <div className="grid-item-6">
                                 <div className="input-box">
-                                    <label>lunchStart</label> 
+                                    <label>Entrada do almoço</label> 
                                     <TimeInput value={this.props.comptime.lunchStart}
                                            onChange={(e) => this.handleInputChange(e, 'lunchStart')} type="text"/>
                                 </div>                             
@@ -159,7 +158,7 @@ class components extends Component {
                         <div className="row">
                             <div className="grid-item-6">
                                 <div className="input-box">
-                                    <label>lunchEnd</label> 
+                                    <label>Saída do almoço</label> 
                                     <TimeInput value={this.props.comptime.lunchEnd}
                                            onChange={(e) => this.handleInputChange(e, 'lunchEnd')} type="text"/>
                                 </div>                             
@@ -168,7 +167,7 @@ class components extends Component {
                         <div className="row">
                             <div className="grid-item-6">
                                 <div className="input-box">
-                                    <label>stoppingTime</label> 
+                                    <label>Saída</label> 
                                     <TimeInput value={this.props.comptime.stoppingTime}
                                            onChange={(e) => this.handleInputChange(e, 'stoppingTime')} type="text"/>
                                 </div>                             
@@ -176,7 +175,7 @@ class components extends Component {
                         </div>
                         <div className="row">
                             <div className="grid-item-6">
-                                    {this.props.loading ? <Loading loading={this.props.loading} size={22}/> : <button>Salvar</button>}                          
+                                    {this.props.loading ? <Loading loading={this.props.loading} size={22}/> : <button class="block">Salvar</button>}                          
                             </div>
                         </div>
                     </form>
