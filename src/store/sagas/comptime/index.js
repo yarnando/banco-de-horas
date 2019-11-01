@@ -116,10 +116,10 @@ function* createNewComptimeList(action) {
   for (let i = 1; i <= numberOfDays; i++) {
     let item = {
       day: `${i < 10 ? "0" : ""}${i}/${mes}/${ano}`,
-      startingTime: "00:00",
-      lunchStart: "00:00",
-      lunchEnd: "00:00",
-      stoppingTime: "00:00",
+      startingTime: "08:00",
+      lunchStart: "12:00",
+      lunchEnd: "13:00",
+      stoppingTime: "17:00",
       difference: {
         hours: 0,
         minutes: 0
