@@ -37,7 +37,8 @@ class components extends Component {
           this.props.monthSelected,
           id,
           comptimeList
-        );       
+        );    
+        console.log(comptimeList)   
     }
 
     americanDate(date) {

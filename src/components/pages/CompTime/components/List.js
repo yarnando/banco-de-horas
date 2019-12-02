@@ -37,6 +37,13 @@ class components extends Component {
                     </div>
                   </div>
                 }
+                withFooter={
+                  <div className="align-center">
+                    <div className="grid-item-6 content-center">
+                      <h3>Saldo do dia: {comptime.difference.hours}h e { comptime.difference.hours >= 0 ? comptime.difference.minutes : Math.abs(comptime.difference.minutes) }min</h3>
+                    </div>
+                  </div>
+                }                
               >
                 <div className="flex">
                   <div className="text-right flex-1">Chegada:</div>
