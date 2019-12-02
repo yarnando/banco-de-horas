@@ -58,9 +58,15 @@ class components extends Component {
         let diffMsStartStop = (stoppingTime - startingTime);
         let diffMsLunchTime = (lunchEnd - lunchStart);
         let hoursDoneLunch = Math.floor((diffMsLunchTime % 86400000) / 3600000)
-        let minutesDoneLunch = Math.round(((diffMsLunchTime % 86400000) % 3600000) / 60000)        
+        let minutesDoneLunch = Math.round(((diffMsLunchTime % 86400000) % 3600000) / 60000) 
+        //anulando o banco de horas gerado por bater a volta do almoço mais cedo do que 1 hora
+        if(hoursDoneLunch < 1) {
+            hoursDoneLunch = 1
+            minutesDoneLunch = 0
+        }  
         let hoursDone = (Math.floor((diffMsStartStop % 86400000) / 3600000) ) - (hoursDoneLunch)
         let minutesDone = Math.round(((diffMsStartStop % 86400000) % 3600000) / 60000) - (minutesDoneLunch)
+        
         let totalDone = {
             hours: Number,
             minutes: Number
